@@ -29,7 +29,7 @@ export default function Toolbar() {
   return (
     <div className="fixed font-mono p-4 flex justify-between items-center w-full z-20">
       <div className="flex items-center gap-4">
-        <Link href="/" className="font-bold">Slides App</Link>
+        <Link href="/" className="font-bold">SlideSync</Link>
         <div onClick={handleShare} className="border p-2 rounded text-xs text-gray-500 cursor-copy">Room ID: <b>{roomId} 🔗</b></div>
       </div>
       <div className="flex gap-2">

@@ -1,4 +1,4 @@
-## Slides App
+## SlideSync
 
 Collaborative slide playground built with Next.js 15, Tailwind CSS, and Liveblocks.
 
