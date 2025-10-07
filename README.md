@@ -1,13 +1,19 @@
-## SlideSync
+# SlideSync
 
 Collaborative slide playground built with Next.js 15, Tailwind CSS, and Liveblocks.
 
-Features
+## Features
 - Create or join a room using a short 4‑char ID (see `lib/id.ts`).
 - Real‑time collaborative editing powered by Liveblocks.
 - Draggable, editable text blocks inside a bounded slide area.
+- Undo/Redo enabled.
 - Live presence: avatars and remote cursors.
 - Tailwind‑only styling.
+
+### Demo Images - 
+<img width="5088" height="3924" alt="image" src="https://github.com/user-attachments/assets/5b0e32a7-f225-4eb7-afaf-328ed1fed298" />
+<img width="5088" height="3924" alt="image" src="https://github.com/user-attachments/assets/c2e70961-00a0-4fee-8b99-e1c0d88931ed" />
+
 
 ## Setup
 
@@ -41,6 +47,7 @@ Open http://localhost:3000.
 - Slide editor: `components/SlideEditor.tsx` renders text blocks from Liveblocks storage (`storage.blocks`).
 	- Dragging is bounded to the slide container using a custom `components/Draggable.tsx`.
 	- Text blocks are `contentEditable` and saved on blur.
+ 	- Undo and Redo available
 	- Presence is updated on every pointer move (no throttling), and cleared on pointer leave.
 - Cursors & avatars: [Reused from the Liveblocks examples]
 	- `components/CollaboratorCursors.tsx` shows remote cursors and can optionally display labels.
