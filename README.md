@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Slides App
 
-## Getting Started
+Collaborative slide playground built with Next.js 15, Tailwind CSS, and Liveblocks.
 
-First, run the development server:
+Features
+- Create or join a room using a short 4‑char ID (see `lib/id.ts`).
+- Real‑time collaborative editing powered by Liveblocks.
+- Draggable, editable text blocks inside a bounded slide area.
+- Live presence: avatars and remote cursors.
+- Tailwind‑only styling.
+
+## Setup
+
+1) Install dependencies
+
+```bash
+npm install
+# or: pnpm install / yarn install / bun install
+```
+
+2) Environment
+
+Create a `.env.local` with your Liveblocks keys (example):
+
+```bash
+LIVEBLOCKS_PUBLIC_KEY=your_public_key
+```
+
+3) Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Room IDs: `generateRoomId()` returns a readable 4‑char code (A–Z, 2–9). `normalizeRoomId()` uppercases input; `isValidRoomId()` validates format.
+- Provider: Each room page (`app/room/[roomId]/page.tsx`) wraps content with a `Provider` that mounts the Liveblocks `RoomProvider`.
+- Slide editor: `components/SlideEditor.tsx` renders text blocks from Liveblocks storage (`storage.blocks`).
+	- Dragging is bounded to the slide container using a custom `components/Draggable.tsx`.
+	- Text blocks are `contentEditable` and saved on blur.
+	- Presence is updated on every pointer move (no throttling), and cleared on pointer leave.
+- Cursors & avatars: [Reused from the Liveblocks examples]
+	- `components/CollaboratorCursors.tsx` shows remote cursors and can optionally display labels.
+	- `components/LiveAvatars.tsx` shows a compact stack of participant avatars using Tailwind classes.
 
-## Learn More
+## Commands
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run dev        # start dev server
+npm run build      # production build
+npm run start      # start production server
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Folder structure (partial)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+	room/[roomId]/page.tsx      # Room page with Provider
+components/
+	SlideEditor.tsx             # Draggable, editable blocks
+	Draggable.tsx               # Simple bounded drag logic
+	CollaboratorCursors.tsx     # Remote cursors
+	LiveAvatars.tsx             # Participant avatars (Tailwind only)
+	Toolbar.tsx                 # Add block, undo/redo, copy room link
+lib/
+	id.ts                       # 4‑char ID utils
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Improvements
+- Handle multiple slides per room.
+- Mobile support: Dragging and text editing need work on touch devices.
+- Pointer throttling, to reduce network chatter.
+- Better error handling and user feedback for network issues.
+- Authentication and user profiles.
